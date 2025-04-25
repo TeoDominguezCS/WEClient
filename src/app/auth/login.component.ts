@@ -4,6 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { RouterLink } from '@angular/router';
 import { MatInputModule } from '@angular/material/input'
 import { LoginRequest } from './login-request';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ import { LoginRequest } from './login-request';
 export class LoginComponent implements OnInit{
   form!: FormGroup;
 
-  constructor(){
+  constructor(private authService: AuthService){
 
   }
   ngOnInit(): void {
@@ -28,5 +29,12 @@ export class LoginComponent implements OnInit{
       userName: this.form.controls['userName'].value,
       password: this.form.controls['password'].value
     };
+
+    this.authService.login(loginRequest).subscribe({
+      next: result => {
+        console.log(result);
+      },
+      error: error => console.error(error)
+    })
   }
 }
